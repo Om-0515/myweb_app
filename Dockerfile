@@ -1,6 +1,11 @@
-FROM tomcat:8.0.20-jre8
-# Dummy text to test 
-COPY target/myweb*.war /usr/local/tomcat/webapps/myweb.war
+FROM tomcat:9-jdk17
 
-# Git webhook trigger demo
-# TO test github push trigger
+# Remove default root webapps to avoid conflicts
+RUN rm -rf /usr/local/tomcat/webapps/*
+
+# Copy the built war file into tomcat's webapps directory
+COPY target/myweb*.war /usr/local/tomcat/webapps/ROOT.war
+
+EXPOSE 8080
+
+CMD ["catalina.sh", "run"]
